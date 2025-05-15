@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HongKongMan</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    @media screen and (orientation: portrait) {
+      body {
+        background: url('background1.jpg') no-repeat center center fixed;
+        background-size: cover;
+      }
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 6vw;
+      margin-bottom: 20px;
+    }
+
+    #timer {
+      font-size: 5.5vw;
+      font-weight: bold;
+      word-wrap: break-word;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.5em;
+      }
+      #timer {
+        font-size: 2em;
+      }
+    }
+
+    /* 菜单按钮样式：白底黑字 */
+    #menuBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background-color: white;
+      color: black;
+      border: none;
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    /* 侧栏样式：白底黑字 */
+    #sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: white;
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      z-index: 4;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+
+    #sidebar a {
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 20px;
+      color: black;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    #sidebar a:hover {
+      background-color: #eee;
+    }
+
+    #sidebar .closebtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      color: black;
+    }
+
+    /* 点击侧边栏外区域时的遮罩 */
+    #sidebarOverlay {
+      display: none;
+      position: fixed;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>HongKongMan已经离开了林伟华：</h1>
+    <div id="timer">加载中...</div>
+  </div>
+
+  <!-- 遮罩层（点击关闭侧栏） -->
+  <div id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- 左下角菜单按钮 -->
+  <button id="menuBtn" onclick="openSidebar()">☰ 菜单</button>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">×</span>
+    <a href="https://www.google.com" target="_blank"></a>
+    <a href="https://www.bilibili.com" target="_blank"></a>
+    <a href="https://www.zhihu.com" target="_blank"></a>
+    <a href="https://www.openai.com" target="_blank"></a>
+  </div>
+
+  <script>
+    const startTime = new Date("2025-05-09T16:45:00");
+
+    function updateTimer() {
+      const now = new Date();
+      let diff = Math.floor((now - startTime) / 1000);
+
+      const years = Math.floor(diff / (365.25 * 24 * 60 * 60));
+      diff -= years * 365.25 * 24 * 60 * 60;
+
+      const months = Math.floor(diff / (30.44 * 24 * 60 * 60));
+      diff -= months * 30.44 * 24 * 60 * 60;
+
+      const days = Math.floor(diff / (24 * 60 * 60));
+      diff -= days * 24 * 60 * 60;
+
+      const hours = Math.floor(diff / 3600);
+      diff -= hours * 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff % 60;
+
+      document.getElementById("timer").textContent =
+        `${years} 年 ${months} 月 ${days} 天 ` +
+        `${hours.toString().padStart(2, '0')} 小时 ` +
+        `${minutes.toString().padStart(2, '0')} 分钟 ` +
+        `${seconds.toString().padStart(2, '0')} 秒`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    function openSidebar() {
+      document.getElementById("sidebar").style.width = "250px";
+      document.getElementById("sidebarOverlay").style.display = "block";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").style.width = "0";
+      document.getElementById("sidebarOverlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>
